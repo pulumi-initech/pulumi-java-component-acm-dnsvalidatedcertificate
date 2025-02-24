@@ -29,3 +29,5 @@ java {
 application {
     mainClass = "com.pulumi.components.acm.App"
 }
+
+version '1.0.2'
