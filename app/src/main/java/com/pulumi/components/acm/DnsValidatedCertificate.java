@@ -5,6 +5,9 @@ import com.pulumi.aws.acm.CertificateValidation;
 import com.pulumi.aws.acm.CertificateValidationArgs;
 import com.pulumi.aws.route53.Record;
 import com.pulumi.aws.route53.RecordArgs;
+import com.pulumi.aws.route53.Route53Functions;
+import com.pulumi.aws.route53.inputs.GetZoneArgs;
+import com.pulumi.aws.route53.outputs.GetZoneResult;
 import com.pulumi.components.acm.inputs.DnsValidatedCertificateArgs;
 import com.pulumi.core.annotations.Export;
 import com.pulumi.core.Either;
@@ -30,6 +33,8 @@ public class DnsValidatedCertificate extends ComponentResource {
             new CertificateArgs.Builder().domainName(args.getDomainName()).validationMethod("DNS").build(),
             CustomResourceOptions.builder().parent(this).build());
 
+	Output<GetZoneResult> zoneResult = Route53Functions.getZone(GetZoneArgs.builder().name(args.getZoneName()).build());
+
     Record certValidationRecord =
         new Record(
             "domainName-valid",
@@ -45,7 +50,7 @@ public class DnsValidatedCertificate extends ComponentResource {
                         .apply(
                             o -> Output.of(Either.ofLeft(o.getFirst().resourceRecordType().get()))))
                 .ttl(60)
-                .zoneId(args.getZoneId())
+                .zoneId(zoneResult.applyValue(z -> z.zoneId()))
                 .build(),
             CustomResourceOptions.builder().parent(this).build());
 

@@ -7,7 +7,6 @@ import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 
 import com.pulumi.core.Output;
-// import com.pulumi.core.annotations.CustomType.Builder;
 import com.pulumi.resources.ResourceArgs;
 
 @Builder
@@ -17,5 +16,5 @@ import com.pulumi.resources.ResourceArgs;
 @AllArgsConstructor
 public class DnsValidatedCertificateArgs extends ResourceArgs {
 	private Output<String> domainName;
-    private Output<String> zoneId;
+    private Output<String> zoneName;
 }
